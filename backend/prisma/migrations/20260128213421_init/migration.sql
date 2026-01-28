@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "Vehicle" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "price" INTEGER NOT NULL,
     "shortDesc" TEXT,
@@ -18,25 +18,35 @@ CREATE TABLE "Vehicle" (
     "registrationNo" TEXT,
     "color" TEXT,
     "boughtPrice" INTEGER,
-    "boughtDate" DATETIME,
+    "boughtDate" TIMESTAMP(3),
     "soldPrice" INTEGER,
-    "soldDate" DATETIME
+    "soldDate" TIMESTAMP(3),
+
+    CONSTRAINT "Vehicle_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "VehicleImage" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "url" TEXT NOT NULL,
     "vehicleId" TEXT NOT NULL,
-    CONSTRAINT "VehicleImage_vehicleId_fkey" FOREIGN KEY ("vehicleId") REFERENCES "Vehicle" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+
+    CONSTRAINT "VehicleImage_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Maintenance" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "cost" INTEGER NOT NULL,
     "note" TEXT NOT NULL,
-    "date" DATETIME NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL,
     "vehicleId" TEXT NOT NULL,
-    CONSTRAINT "Maintenance_vehicleId_fkey" FOREIGN KEY ("vehicleId") REFERENCES "Vehicle" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+
+    CONSTRAINT "Maintenance_pkey" PRIMARY KEY ("id")
 );
+
+-- AddForeignKey
+ALTER TABLE "VehicleImage" ADD CONSTRAINT "VehicleImage_vehicleId_fkey" FOREIGN KEY ("vehicleId") REFERENCES "Vehicle"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Maintenance" ADD CONSTRAINT "Maintenance_vehicleId_fkey" FOREIGN KEY ("vehicleId") REFERENCES "Vehicle"("id") ON DELETE CASCADE ON UPDATE CASCADE;
