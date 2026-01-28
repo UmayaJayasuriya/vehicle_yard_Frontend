@@ -12,7 +12,7 @@ services:
     autoDeploy: true
     envVars:
       - key: DATABASE_URL
-        fromSecret: DATABASE_URL
+        value: "CHANGE_ME_POSTGRES_URL"
       - key: PORT
         value: "4000"
 
@@ -28,4 +28,4 @@ services:
     autoDeploy: true
     envVars:
       - key: VITE_API_URL
-        fromSecret: VITE_API_URL
+        value: "CHANGE_ME_BACKEND_URL"
