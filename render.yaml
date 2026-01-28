@@ -5,13 +5,14 @@ services:
   - type: web
     name: vehicle-yard-backend
     env: node
-    rootDir: backend         # path to your backend folder
+    rootDir: backend
     buildCommand: npm install --include=dev && npx prisma generate
     preDeployCommand: npx prisma migrate deploy
-    startCommand: node src/server.js   # change if your entry file is different
+    startCommand: node src/server.js
     autoDeploy: true
     envVars:
-      - fromSecret: DATABASE_URL      # must create this secret in Render
+      - key: DATABASE_URL
+        fromSecret: DATABASE_URL
       - key: PORT
         value: "4000"
 
@@ -21,9 +22,10 @@ services:
   - type: web
     name: vehicle-yard-frontend
     env: static
-    rootDir: frontend        # path to your frontend folder
+    rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
     autoDeploy: true
     envVars:
-      - fromSecret: VITE_API_URL    # backend URL secret (set after backend deploy)
+      - key: VITE_API_URL
+        fromSecret: VITE_API_URL
