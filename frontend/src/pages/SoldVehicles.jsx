@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { loadVehicles } from "../store/vehicleStore";
+import api from "../api/client";
 
 export default function SoldVehicles() {
   const [vehicles, setVehicles] = useState([]);
@@ -8,7 +8,16 @@ export default function SoldVehicles() {
   const [filterType, setFilterType] = useState("monthly"); // monthly | yearly
 
   useEffect(() => {
-    setVehicles(loadVehicles());
+    let mounted = true;
+    (async () => {
+      try {
+        const data = await api.getVehicles();
+        if (mounted) setVehicles(data);
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+    return () => { mounted = false; };
   }, []);
 
   // Get sold vehicles only

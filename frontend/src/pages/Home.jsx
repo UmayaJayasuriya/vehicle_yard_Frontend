@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import VehicleCard from "../components/VehicleCard";
-import { loadVehicles } from "../store/vehicleStore";
+import api from "../api/client";
 
 const LOCATIONS = ["Jaffna", "Kilinochchi", "Vavuniya", "Batticaloa"];
 
@@ -10,7 +10,16 @@ export default function Home() {
   const [selectedLocation, setSelectedLocation] = useState("");
 
   useEffect(() => {
-    setVehicles(loadVehicles());
+    let mounted = true;
+    (async () => {
+      try {
+        const data = await api.getVehicles();
+        if (mounted) setVehicles(data);
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+    return () => { mounted = false; };
   }, []);
 
   const available = useMemo(

@@ -4,14 +4,24 @@ import {
   getCostTotal,
   getMaintenanceTotal,
   getProfit,
-  loadVehicles
+  
 } from "../store/vehicleStore";
+import api from "../api/client";
 
 export default function AdminFinance() {
   const [vehicles, setVehicles] = useState([]);
 
   useEffect(() => {
-    setVehicles(loadVehicles());
+    let mounted = true;
+    (async () => {
+      try {
+        const data = await api.getVehicles();
+        if (mounted) setVehicles(data);
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+    return () => { mounted = false; };
   }, []);
 
   const soldVehicles = useMemo(

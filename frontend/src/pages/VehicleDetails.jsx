@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import ImageGallery from "../components/ImageGallery";
-import { loadVehicles } from "../store/vehicleStore";
+import api from "../api/client";
 import logoImage from "../assets/images/bird-colorful-gradient-design-vector_343694-2506.avif";
 
 export default function VehicleDetails() {
@@ -9,7 +9,16 @@ export default function VehicleDetails() {
   const [vehicles, setVehicles] = useState([]);
 
   useEffect(() => {
-    setVehicles(loadVehicles());
+    let mounted = true;
+    (async () => {
+      try {
+        const data = await api.getVehicles();
+        if (mounted) setVehicles(data);
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+    return () => { mounted = false; };
   }, []);
 
   const vehicle = useMemo(() => vehicles.find(v => v.id === id), [vehicles, id]);

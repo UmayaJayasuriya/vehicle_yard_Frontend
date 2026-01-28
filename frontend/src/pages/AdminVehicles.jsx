@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { loadVehicles, saveVehicles, uid } from "../store/vehicleStore";
+import { uid } from "../store/vehicleStore";
+import api from "../api/client";
 import { getNextInvoiceNo } from "../store/invoiceNumber";
 import { generateInvoicePdf } from "../utils/invoicePdf";
 
@@ -53,12 +54,22 @@ export default function AdminVehicles() {
   const [paymentNotes, setPaymentNotes] = useState("");
 
   useEffect(() => {
-    setVehicles(loadVehicles());
+    refresh();
   }, []);
 
+  async function refresh() {
+    try {
+      const data = await api.getVehicles();
+      setVehicles(data);
+    } catch (e) {
+      console.error(e);
+      alert("Failed to load vehicles from server");
+    }
+  }
+
   function persist(next) {
+    // kept for minimal changes; now simply updates local state
     setVehicles(next);
-    saveVehicles(next);
   }
 
   const editingVehicle = useMemo(
@@ -145,25 +156,26 @@ export default function AdminVehicles() {
     };
 
     if (!editingId) {
-      const created = { ...base, id: uid("veh") };
-      persist([created, ...vehicles]);
+      const payload = { ...base, id: uid("veh") };
+      api.createVehicle(payload)
+        .then(() => refresh())
+        .catch((e) => { console.error(e); alert("Failed to create vehicle"); });
       resetForm();
       return;
     }
 
-    const next = vehicles.map(v => {
-      if (v.id !== editingId) return v;
-      // Keep current status (available/sold)
-      return { ...base, id: v.id, status: v.status };
-    });
-
-    persist(next);
+    const existing = vehicles.find(v => v.id === editingId);
+    const payload = { ...base, status: existing?.status || "available" };
+    api.updateVehicle(editingId, payload)
+      .then(() => refresh())
+      .catch((e) => { console.error(e); alert("Failed to update vehicle"); });
     resetForm();
   }
 
   function deleteVehicle(id) {
-    const next = vehicles.filter(v => v.id !== id);
-    persist(next);
+    api.deleteVehicle(id)
+      .then(() => refresh())
+      .catch((e) => { console.error(e); alert("Failed to delete vehicle"); });
     if (editingId === id) resetForm();
   }
 
@@ -173,19 +185,28 @@ export default function AdminVehicles() {
       return;
     }
     const newMaintenance = {
-      id: uid("maint"),
       cost: Number(maintenanceCost) || 0,
       note: maintenanceNote.trim(),
       date: maintenanceDate,
     };
-    setMaintenance([...maintenance, newMaintenance]);
+    if (editingId) {
+      api.addMaintenance(editingId, newMaintenance)
+        .then(() => refresh())
+        .catch((e) => { console.error(e); alert("Failed to add maintenance"); });
+    }
+    setMaintenance([...(maintenance || []), { ...newMaintenance, id: uid("maint") }]);
     setMaintenanceCost("");
     setMaintenanceNote("");
     setMaintenanceDate("");
   }
 
   function removeMaintenance(id) {
-    setMaintenance(maintenance.filter(m => m.id !== id));
+    if (editingId && id) {
+      api.deleteMaintenance(editingId, id)
+        .then(() => refresh())
+        .catch((e) => { console.error(e); alert("Failed to remove maintenance"); });
+    }
+    setMaintenance((maintenance || []).filter(m => m.id !== id));
   }
 
   function addImage() {
@@ -318,9 +339,9 @@ function generateInvoiceAndSell() {
   );
 
   // 2) Update vehicle as SOLD (and finance values for profit report)
-  const next = vehicles.map(v => {
-    if (v.id !== sellId) return v;
-    return {
+  const v = vehicles.find(v => v.id === sellId);
+  if (v) {
+    const payload = {
       ...v,
       status: "sold",
       finance: {
@@ -335,9 +356,10 @@ function generateInvoiceAndSell() {
         }
       }
     };
-  });
-
-  persist(next);
+    api.updateVehicle(v.id, payload)
+      .then(() => refresh())
+      .catch((e) => { console.error(e); alert("Failed to mark as sold"); });
+  }
 
   // close panel
   setSellId(null);
@@ -347,9 +369,9 @@ function generateInvoiceAndSell() {
   function confirmSell() {
     if (!sellId) return;
 
-    const next = vehicles.map(v => {
-      if (v.id !== sellId) return v;
-      return {
+    const v = vehicles.find(v => v.id === sellId);
+    if (v) {
+      const payload = {
         ...v,
         status: "sold",
         finance: {
@@ -358,9 +380,10 @@ function generateInvoiceAndSell() {
           soldDate: soldDate || new Date().toISOString().slice(0, 10),
         }
       };
-    });
-
-    persist(next);
+      api.updateVehicle(v.id, payload)
+        .then(() => refresh())
+        .catch((e) => { console.error(e); alert("Failed to mark as sold"); });
+    }
     setSellId(null);
     setSoldPrice("");
     setSoldDate("");
