@@ -19,12 +19,11 @@ services:
   # --------------------------
   # Frontend Service
   # --------------------------
-  - type: web
+  - type: static_site
     name: vehicle-yard-frontend
-    env: static
     rootDir: frontend
     buildCommand: npm install && npm run build
-    staticPublishPath: dist
+    publishPath: dist
     autoDeploy: true
     envVars:
       - key: VITE_API_URL
