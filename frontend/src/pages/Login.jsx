@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../store/authContext.jsx";
 
@@ -7,7 +7,14 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, isAdmin } = useAuth();
+
+  // If already logged in (state updated), redirect away from login
+  useEffect(() => {
+    if (isAdmin) {
+      navigate("/admin/vehicles", { replace: true });
+    }
+  }, [isAdmin, navigate]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -16,10 +23,12 @@ export default function Login() {
     const ADMIN_USERNAME = "admin";
     const ADMIN_PASSWORD = "admin123";
 
-    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+    const u = username.trim();
+    const p = password.trim();
+    if (u === ADMIN_USERNAME && p === ADMIN_PASSWORD) {
       // Use auth context to set admin state
       login();
-      sessionStorage.setItem("adminUsername", username);
+      sessionStorage.setItem("adminUsername", u);
       navigate("/admin/vehicles", { replace: true });
     } else {
       setError("Invalid username or password");
