@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../store/authContext.jsx";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -15,10 +17,9 @@ export default function Login() {
     const ADMIN_PASSWORD = "admin123";
 
     if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-      // Store admin login in sessionStorage (non-persistent across browser restarts)
-      sessionStorage.setItem("isAdmin", "true");
+      // Use auth context to set admin state
+      login();
       sessionStorage.setItem("adminUsername", username);
-      // Navigate within SPA to avoid server-side 404 on static hosting
       navigate("/admin/vehicles", { replace: true });
     } else {
       setError("Invalid username or password");
