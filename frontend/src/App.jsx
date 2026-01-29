@@ -40,14 +40,19 @@ function AppContent() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
 
-          {isAdmin && (
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<Navigate to="vehicles" replace />} />
-              <Route path="vehicles" element={<AdminVehicles />} />
-              <Route path="finance" element={<AdminFinance />} />
-              <Route path="sold" element={<SoldVehicles />} />
-            </Route>
-          )}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedAdminRoute>
+                <AdminLayout />
+              </ProtectedAdminRoute>
+            }
+          >
+            <Route index element={<Navigate to="vehicles" replace />} />
+            <Route path="vehicles" element={<AdminVehicles />} />
+            <Route path="finance" element={<AdminFinance />} />
+            <Route path="sold" element={<SoldVehicles />} />
+          </Route>
 
           <Route path="*" element={<NotFound />} />
         </Routes>
