@@ -15,9 +15,9 @@ export default function Login() {
     const ADMIN_PASSWORD = "admin123";
 
     if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-      // Store admin login in localStorage
-      localStorage.setItem("isAdmin", "true");
-      localStorage.setItem("adminUsername", username);
+      // Store admin login in sessionStorage (non-persistent across browser restarts)
+      sessionStorage.setItem("isAdmin", "true");
+      sessionStorage.setItem("adminUsername", username);
       // Reload to update auth context
       window.location.href = "/admin/vehicles";
     } else {

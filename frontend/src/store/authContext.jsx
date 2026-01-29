@@ -4,19 +4,20 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [isAdmin, setIsAdmin] = useState(() => {
-    // Initialize from localStorage immediately
-    return localStorage.getItem("isAdmin") === "true";
+    // Initialize from sessionStorage for non-persistent admin sessions
+    if (typeof window === 'undefined') return false;
+    return sessionStorage.getItem("isAdmin") === "true";
   });
   const [loading, setLoading] = useState(false);
 
   const login = () => {
-    localStorage.setItem("isAdmin", "true");
+    sessionStorage.setItem("isAdmin", "true");
     setIsAdmin(true);
   };
 
   const logout = () => {
-    localStorage.removeItem("isAdmin");
-    localStorage.removeItem("adminUsername");
+    sessionStorage.removeItem("isAdmin");
+    sessionStorage.removeItem("adminUsername");
     setIsAdmin(false);
   };
 
