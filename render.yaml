@@ -6,9 +6,11 @@ services:
     name: vehicle-yard-backend
     env: node
     rootDir: backend
-    buildCommand: npm install --include=dev && npx prisma generate
-    preDeployCommand: npx prisma migrate deploy
-    postDeployCommand: node src/seed.js
+    buildCommand: |
+      npm install --include=dev
+      npx prisma generate
+      npx prisma migrate deploy
+      node src/seed.js
     startCommand: node src/server.js
     autoDeploy: true
     envVars:
@@ -16,6 +18,7 @@ services:
         fromSecret: DATABASE_URL
       - key: PORT
         value: "4000"
+
 
   # --------------------------
   # Frontend Service
