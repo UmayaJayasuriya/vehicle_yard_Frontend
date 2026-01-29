@@ -15,7 +15,7 @@ services:
     autoDeploy: true
     envVars:
       - key: DATABASE_URL
-        fromSecret: postgres://avnadmin:AVNS_mapiXLN31OsYZzt0Hj-@pg-3ca8b90c-vehicleyard1.h.aivencloud.com:21603/defaultdb?sslmode=require
+        value: postgres://avnadmin:AVNS_mapiXLN31OsYZzt0Hj-@pg-3ca8b90c-vehicleyard1.h.aivencloud.com:21603/defaultdb?sslmode=require
       - key: PORT
         value: "4000"
 
@@ -32,4 +32,4 @@ services:
     autoDeploy: true
     envVars:
       - key: VITE_API_URL
-        fromSecret: https://vehicle-yard-backend.onrender.com
+        value: https://vehicle-yard-backend.onrender.com
