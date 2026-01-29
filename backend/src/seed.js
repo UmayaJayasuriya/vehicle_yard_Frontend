@@ -4,6 +4,8 @@ import { sampleVehicles } from './sampleData.js';
 const prisma = new PrismaClient();
 
 async function main() {
+  console.log("🌱 Seeding...");
+
   for (const v of sampleVehicles) {
     await prisma.vehicle.upsert({
       where: { id: v.id },
@@ -31,14 +33,23 @@ async function main() {
         soldPrice: v.finance?.soldPrice ?? undefined,
         soldDate: v.finance?.soldDate ? new Date(v.finance.soldDate) : undefined,
         images: {
-          create: (v.images || []).map((url) => ({ id: `img_${Math.random().toString(16).slice(2)}_${Date.now()}`, url }))
+          createMany: {
+            data: (v.images || []).map((url) => ({
+              id: `img_${v.id}_${url}`,
+              url
+            })),
+            skipDuplicates: true
+          }
         }
       }
     });
+
     for (const m of v.finance?.maintenance || []) {
-      await prisma.maintenance.create({
-        data: {
-          id: `m_${Math.random().toString(16).slice(2)}_${Date.now()}`,
+      await prisma.maintenance.upsert({
+        where: { id: m.id || `m_${v.id}_${m.date}` },
+        update: {},
+        create: {
+          id: m.id || `m_${v.id}_${m.date}`,
           cost: m.cost,
           note: m.note,
           date: new Date(m.date),
@@ -47,15 +58,15 @@ async function main() {
       });
     }
   }
+
+  console.log("✅ Seed finished");
 }
 
 main()
-  .then(async () => {
-    console.log('Seed completed');
-    await prisma.$disconnect();
-  })
-  .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
+  .catch((e) => {
+    console.error("❌ Seed failed:", e);
     process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
   });
