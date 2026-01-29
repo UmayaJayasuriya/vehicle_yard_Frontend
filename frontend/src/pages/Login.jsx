@@ -18,8 +18,8 @@ export default function Login() {
       // Store admin login in sessionStorage (non-persistent across browser restarts)
       sessionStorage.setItem("isAdmin", "true");
       sessionStorage.setItem("adminUsername", username);
-      // Reload to update auth context
-      window.location.href = "/admin/vehicles";
+      // Navigate within SPA to avoid server-side 404 on static hosting
+      navigate("/admin/vehicles", { replace: true });
     } else {
       setError("Invalid username or password");
       setPassword("");
