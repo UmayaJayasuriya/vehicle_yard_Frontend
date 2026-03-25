@@ -2,11 +2,25 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import ImageGallery from "../components/ImageGallery";
 import api from "../api/client";
-import logoImage from "../assets/images/bird-colorful-gradient-design-vector_343694-2506.avif";
+import "./VehicleDetails.css";
+
+const SPEC_ROWS = [
+  { label: "Brand",           key: "brand" },
+  { label: "Model",           key: "model" },
+  { label: "Year",            key: "year" },
+  { label: "Fuel",            key: "fuel" },
+  { label: "Transmission",   key: "transmission" },
+  { label: "Location",       key: "location" },
+  { label: "Color",          key: "color" },
+  { label: "Chassis No",     key: "chassisNo" },
+  { label: "Engine No",      key: "engineNo" },
+  { label: "Registration",   key: "registrationNo" },
+];
 
 export default function VehicleDetails() {
   const { id } = useParams();
   const [vehicles, setVehicles] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let mounted = true;
@@ -14,59 +28,99 @@ export default function VehicleDetails() {
       try {
         const data = await api.getVehicles();
         if (mounted) setVehicles(data);
-      } catch (e) {
-        console.error(e);
-      }
+      } catch (e) { console.error(e); }
+      finally { if (mounted) setLoading(false); }
     })();
     return () => { mounted = false; };
   }, []);
 
   const vehicle = useMemo(() => vehicles.find(v => v.id === id), [vehicles, id]);
 
-  if (!vehicle) return <div className="text-muted">Vehicle not found.</div>;
-
-  return (
-    <div>
-      <div className="mb-4 d-flex align-items-center gap-3">
-        <img src={logoImage} alt="Logo" style={{ width: 50, height: 50, objectFit: "contain" }} />
-        <div>
-          <h4 className="m-0">VEHICLE YARD</h4>
-          <small className="text-muted">Buy & Sell Quality Vehicles</small>
-        </div>
-        <div className="ms-auto">
-          <Link to="/" className="btn btn-outline-secondary btn-sm">Back</Link>
+  if (loading) return (
+    <div className="page-content">
+      <div className="vd-skeleton-wrap">
+        <div className="vd-skeleton" style={{ height: 340 }} />
+        <div style={{ flex: 1 }}>
+          <div className="vd-skeleton" style={{ height: 40, marginBottom: 12 }} />
+          <div className="vd-skeleton" style={{ height: 24, width: "60%", marginBottom: 8 }} />
+          <div className="vd-skeleton" style={{ height: 200 }} />
         </div>
       </div>
+    </div>
+  );
 
-      <div className="row g-4">
-        <div className="col-12 col-lg-6">
-          <ImageGallery images={vehicle.images} height={320} />
+  if (!vehicle) return (
+    <div className="page-content vd-not-found">
+      <div className="home-empty__icon">🔍</div>
+      <h2>Vehicle not found</h2>
+      <p>This listing may have been removed or does not exist.</p>
+      <Link to="/" className="btn-primary" style={{ display: "inline-block", marginTop: "1rem" }}>← Back to Listings</Link>
+    </div>
+  );
+
+  return (
+    <div className="page-content fade-in">
+      {/* Breadcrumb */}
+      <div className="vd-breadcrumb">
+        <Link to="/" className="vd-breadcrumb__link">Vehicles</Link>
+        <span className="vd-breadcrumb__sep">›</span>
+        <span className="vd-breadcrumb__current">{vehicle.title}</span>
+      </div>
+
+      <div className="vd-layout">
+        {/* Gallery */}
+        <div className="vd-gallery">
+          <ImageGallery images={vehicle.images} height={360} />
         </div>
 
-        <div className="col-12 col-lg-6">
-          <h2>{vehicle.title}</h2>
-          <div className="fs-4 fw-bold mb-2">Rs. {Number(vehicle.price).toLocaleString()}</div>
-          <p className="text-muted">{vehicle.shortDesc}</p>
+        {/* Info */}
+        <div className="vd-info">
+          <div className="vd-info__header">
+            <h1 className="vd-info__title">{vehicle.title}</h1>
+            {vehicle.details?.location && (
+              <span className="badge-pill">{vehicle.details.location}</span>
+            )}
+          </div>
 
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">Details</h5>
-              <ul className="list-unstyled m-0">
-                <li><strong>Brand:</strong> {vehicle.details?.brand}</li>
-                <li><strong>Model:</strong> {vehicle.details?.model}</li>
-                <li><strong>Year:</strong> {vehicle.details?.year}</li>
-                <li><strong>Mileage:</strong> {vehicle.details?.mileageKm?.toLocaleString()} km</li>
-                <li><strong>Fuel:</strong> {vehicle.details?.fuel}</li>
-                <li><strong>Transmission:</strong> {vehicle.details?.transmission}</li>
-                <li><strong>Location:</strong> {vehicle.details?.location}</li>
-                <li><strong>Chassis No:</strong> {vehicle.details?.chassisNo || "-"}</li>
-                <li><strong>Engine No:</strong> {vehicle.details?.engineNo || "-"}</li>
-                <li><strong>Registration No:</strong> {vehicle.details?.registrationNo || "-"}</li>
-                <li><strong>Color:</strong> {vehicle.details?.color || "-"}</li>
-              </ul>
+          <div className="vd-info__price">
+            <span className="vd-info__price-label">Price</span>
+            <span className="vd-info__price-val">Rs. {Number(vehicle.price).toLocaleString()}</span>
+          </div>
+
+          {vehicle.shortDesc && (
+            <p className="vd-info__desc">{vehicle.shortDesc}</p>
+          )}
+
+          {/* Specs */}
+          <div className="vd-specs">
+            <h3 className="vd-specs__title">Specifications</h3>
+            <div className="vd-specs__grid">
+              {SPEC_ROWS.map(({ label, key }) => {
+                const val = key === "mileageKm"
+                  ? vehicle.details?.mileageKm != null
+                    ? `${Number(vehicle.details.mileageKm).toLocaleString()} km`
+                    : null
+                  : vehicle.details?.[key];
+                if (!val) return null;
+                return (
+                  <div key={key} className="vd-spec-item">
+                    <span className="vd-spec-item__label">{label}</span>
+                    <span className="vd-spec-item__val">{val}</span>
+                  </div>
+                );
+              })}
+              {vehicle.details?.mileageKm != null && (
+                <div className="vd-spec-item">
+                  <span className="vd-spec-item__label">Mileage</span>
+                  <span className="vd-spec-item__val">{Number(vehicle.details.mileageKm).toLocaleString()} km</span>
+                </div>
+              )}
             </div>
           </div>
 
+          <div className="vd-info__actions">
+            <Link to="/" className="btn-outline">← Back to Listings</Link>
+          </div>
         </div>
       </div>
     </div>

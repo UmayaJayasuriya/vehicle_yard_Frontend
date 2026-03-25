@@ -1,31 +1,33 @@
 import { Link } from "react-router-dom";
+import "./VehicleCard.css";
 
 export default function VehicleCard({ vehicle }) {
   return (
-    <div className="col-12 col-sm-6 col-lg-4">
-      <div className="card h-100 shadow-sm">
+    <div className="vc">
+      <div className="vc__img-wrap">
         <img
           src={vehicle.coverImage}
-          className="card-img-top"
           alt={vehicle.title}
-          style={{ height: 200, objectFit: "cover" }}
+          className="vc__img"
+          loading="lazy"
         />
-        <div className="card-body d-flex flex-column">
-          <h5 className="card-title">{vehicle.title}</h5>
-          <p className="card-text text-muted mb-2">{vehicle.shortDesc}</p>
-          
-          {vehicle.details?.location && (
-            <p className="card-text mb-2">
-              <small className="badge bg-info">{vehicle.details.location}</small>
-            </p>
-          )}
-
-          <div className="mt-auto d-flex justify-content-between align-items-center">
-            <div className="fw-bold">Rs. {Number(vehicle.price).toLocaleString()}</div>
-            <Link className="btn btn-outline-primary btn-sm" to={`/vehicle/${vehicle.id}`}>
-              View
-            </Link>
+        {vehicle.details?.location && (
+          <span className="vc__loc">
+            <i className="bi bi-geo-alt-fill" /> {vehicle.details.location}
+          </span>
+        )}
+      </div>
+      <div className="vc__body">
+        <h3 className="vc__title">{vehicle.title}</h3>
+        <p className="vc__desc">{vehicle.shortDesc}</p>
+        <div className="vc__footer">
+          <div>
+            <div className="vc__price-label">ASKING PRICE</div>
+            <div className="vc__price">Rs. {Number(vehicle.price).toLocaleString()}</div>
           </div>
+          <Link className="vc__cta" to={`/vehicle/${vehicle.id}`}>
+            View Details <i className="bi bi-arrow-right" />
+          </Link>
         </div>
       </div>
     </div>

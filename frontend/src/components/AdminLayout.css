@@ -1,0 +1,47 @@
+/* ============================
+   Admin Layout
+   ============================ */
+.al {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+@media (max-width: 800px) { .al { grid-template-columns: 1fr; } }
+
+.al__sidebar {
+  position: sticky;
+  top: 80px;
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.al__sidebar-head {
+  padding: 1rem 1.25rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+.al__nav {
+  padding: 0.4rem 0;
+  display: flex;
+  flex-direction: column;
+}
+.al__link {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.7rem 1.25rem;
+  font-size: 0.845rem;
+  font-weight: 500;
+  color: var(--text-2);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: all var(--dur) var(--ease);
+}
+.al__link:hover { color: var(--text-1); background: rgba(255,255,255,0.03); }
+.al__link.is-active {
+  color: var(--blue-light);
+  border-left-color: var(--blue);
+  background: var(--blue-dim);
+}
+.al__link-icon { font-size: 0.9rem; }

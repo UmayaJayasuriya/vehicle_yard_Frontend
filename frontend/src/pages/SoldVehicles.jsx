@@ -122,7 +122,7 @@ export default function SoldVehicles() {
             <div className="col-12 col-md-3">
               <div className="pt-2">
                 <p className="text-muted small m-0">
-                  {filterType === "monthly" 
+                  {filterType === "monthly"
                     ? `${new Date(2024, filterMonth - 1).toLocaleString("en-US", { month: "long" })} ${filterYear}`
                     : `Year ${filterYear}`
                   }
@@ -205,7 +205,9 @@ export default function SoldVehicles() {
                     </td>
                     <td>
                       <span className="badge bg-info">
-                        {v.finance?.invoice?.payment?.type || "Unknown"}
+                        {v.finance?.payment?.type
+                          || v.finance?.invoice?.payment?.type
+                          || "Unknown"}
                       </span>
                     </td>
                   </tr>

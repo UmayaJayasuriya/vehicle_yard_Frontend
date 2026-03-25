@@ -1,0 +1,122 @@
+/* ============================
+   Home Page
+   ============================ */
+
+/* Hero */
+.h-hero {
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--border-2);
+  padding: 5.5rem 1.5rem 4rem;
+}
+.h-hero__wrap {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+  animation: fadeUp 0.55s var(--ease) both;
+}
+.h-hero__h1 {
+  margin: 0.25rem 0 1.1rem !important;
+}
+.h-hero__sub {
+  font-size: 0.95rem;
+  color: var(--text-2);
+  line-height: 1.75;
+  margin: 0 auto 2.25rem;
+  max-width: 500px;
+}
+
+/* KPI bar */
+.h-hero__kpis {
+  display: inline-flex;
+  align-items: center;
+  gap: 2rem;
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 0.9rem 2rem;
+}
+.h-kpi { text-align: center; }
+.h-kpi__val {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--gold-light);
+  line-height: 1;
+  margin-bottom: 0.2rem;
+}
+.h-kpi__lbl {
+  font-size: 0.67rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.h-kpi-div {
+  width: 1px;
+  height: 32px;
+  background: var(--border-2);
+}
+
+/* Filters */
+.h-filter { margin-bottom: 1.75rem; }
+.h-filter__inputs {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.6rem;
+}
+.h-filter__field {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+}
+.h-filter__field--sm { flex: 0 0 180px; }
+.h-filter__icon {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8rem;
+  color: var(--text-3);
+  pointer-events: none;
+  z-index: 1;
+}
+.h-filter__input { padding-left: 2.25rem !important; }
+.h-filter__clear { height: 38px; padding-left: 0.9rem; padding-right: 0.9rem; }
+.h-filter__count {
+  font-size: 0.78rem;
+  color: var(--text-3);
+  margin: 0;
+  padding-left: 2px;
+}
+
+/* Card grid */
+.h-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 1.1rem;
+}
+
+/* Skeleton */
+.h-skel {
+  height: 310px;
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, var(--surface) 25%, var(--surface-2) 50%, var(--surface) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border: 1px solid var(--border-2);
+}
+
+/* Empty */
+.h-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 5rem 2rem;
+}
+.h-empty__icon {
+  font-size: 2.5rem;
+  color: var(--text-3);
+  display: block;
+  margin-bottom: 1rem;
+}
+.h-empty h3 { color: var(--text-2) !important; font-size: 1.1rem !important; }
+.h-empty p  { color: var(--text-3); font-size: 0.875rem; margin: 0; }

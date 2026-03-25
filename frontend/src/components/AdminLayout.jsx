@@ -1,22 +1,35 @@
 import { Outlet, NavLink } from "react-router-dom";
+import "./AdminLayout.css";
+
+const NAV = [
+  { to: "/admin/vehicles", icon: "bi-car-front",   label: "Manage Vehicles" },
+  { to: "/admin/finance",  icon: "bi-bar-chart",    label: "Finance Reports" },
+  { to: "/admin/sold",     icon: "bi-check2-circle",label: "Sold Vehicles" },
+];
 
 export default function AdminLayout() {
   return (
-    <div className="row g-4">
-      <div className="col-12 col-lg-3">
-        <div className="list-group">
-          <NavLink to="/admin/vehicles" className="list-group-item list-group-item-action">
-            Manage Vehicles
-          </NavLink>
-          <NavLink to="/admin/finance" className="list-group-item list-group-item-action">
-            Finance Reports
-          </NavLink>
+    <div className="al page-content">
+      <aside className="al__sidebar">
+        <div className="al__sidebar-head">
+          <span className="section-overline" style={{ margin: 0 }}>Administration</span>
         </div>
-      </div>
-
-      <div className="col-12 col-lg-9">
+        <nav className="al__nav">
+          {NAV.map(({ to, icon, label }) => (
+            <NavLink
+              key={to}
+              to={to}
+              className={({ isActive }) => `al__link${isActive ? " is-active" : ""}`}
+            >
+              <i className={`bi ${icon} al__link-icon`} />
+              {label}
+            </NavLink>
+          ))}
+        </nav>
+      </aside>
+      <main className="al__main">
         <Outlet />
-      </div>
+      </main>
     </div>
   );
 }

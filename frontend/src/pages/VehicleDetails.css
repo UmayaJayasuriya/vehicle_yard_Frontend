@@ -1,0 +1,144 @@
+/* ============================
+   Vehicle Details Page
+   ============================ */
+.vd-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--text-3);
+  margin-bottom: 1.5rem;
+}
+.vd-breadcrumb__link {
+  color: var(--blue);
+  text-decoration: none;
+}
+.vd-breadcrumb__link:hover { text-decoration: underline; }
+.vd-breadcrumb__sep { color: var(--text-3); }
+.vd-breadcrumb__current {
+  color: var(--text-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 260px;
+}
+
+.vd-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .vd-layout { grid-template-columns: 1fr; }
+}
+
+/* Gallery */
+.vd-gallery { border-radius: var(--radius); overflow: hidden; }
+
+/* Info */
+.vd-info__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+.vd-info__title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-1);
+  margin: 0;
+  letter-spacing: -0.02em;
+  flex: 1;
+}
+
+.vd-info__price {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin-bottom: 1.25rem;
+  padding: 1rem 1.25rem;
+  background: rgba(245,158,11,0.06);
+  border: 1px solid rgba(245,158,11,0.18);
+  border-radius: var(--radius-sm);
+}
+.vd-info__price-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+}
+.vd-info__price-val {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.vd-info__desc {
+  color: var(--text-2);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Specs */
+.vd-specs__title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+  margin-bottom: 1rem;
+}
+.vd-specs__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.1rem;
+  margin-bottom: 1.5rem;
+}
+.vd-spec-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0.6rem 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.vd-spec-item:nth-child(odd)  { border-radius: var(--radius-sm) 0 0 0; }
+.vd-spec-item__label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 0.2rem;
+}
+.vd-spec-item__val {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+.vd-info__actions { display: flex; gap: 0.75rem; }
+
+/* Skeleton */
+.vd-skeleton-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+.vd-skeleton {
+  background: linear-gradient(90deg, var(--surface) 25%, var(--surface-2) 50%, var(--surface) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius);
+}
+.vd-not-found {
+  text-align: center;
+  padding: 5rem 2rem;
+}

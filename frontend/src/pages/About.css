@@ -1,0 +1,139 @@
+/* ============================
+   About Page
+   ============================ */
+.ab-hero {
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--border-2);
+  padding: 5.5rem 0 4rem;
+}
+.ab-hero__inner { max-width: 600px !important; }
+.ab-hero__sub {
+  font-size: 0.95rem;
+  color: var(--text-2);
+  line-height: 1.75;
+  margin: 0.75rem 0 1.75rem;
+}
+.ab-hero__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+/* Stats */
+.ab-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 3rem;
+}
+@media (max-width: 560px) { .ab-stats { grid-template-columns: 1fr 1fr; } }
+.ab-stat {
+  padding: 1.5rem 1rem;
+  text-align: center;
+  background: var(--surface);
+  border-right: 1px solid var(--border-2);
+}
+.ab-stat:last-child { border-right: none; }
+.ab-stat__val {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--gold-light);
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.ab-stat__lbl {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-3);
+}
+
+/* Sections */
+.ab-section { margin-bottom: 3rem; }
+.ab-section__h { margin: 0.25rem 0 1.75rem !important; }
+
+/* Mission / Vision */
+.ab-mv {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+@media (max-width: 620px) { .ab-mv { grid-template-columns: 1fr; } }
+.ab-mv__card {
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  transition: border-color var(--dur);
+}
+.ab-mv__card:hover { border-color: rgba(37,99,235,0.3); }
+.ab-mv__icon-wrap {
+  width: 40px; height: 40px;
+  background: var(--blue-dim);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: var(--blue-light);
+  margin-bottom: 1rem;
+}
+.ab-mv__card h3 { font-size: 1.05rem !important; margin-bottom: 0.6rem !important; }
+.ab-mv__card p  { font-size: 0.875rem; color: var(--text-2); line-height: 1.7; margin: 0; }
+
+/* Features grid */
+.ab-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+.ab-feature {
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  transition: border-color var(--dur), transform var(--dur);
+}
+.ab-feature:hover { border-color: rgba(37,99,235,0.3); transform: translateY(-2px); }
+.ab-feature__icon-wrap {
+  width: 38px; height: 38px;
+  background: var(--blue-dim);
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  color: var(--blue-light);
+  margin-bottom: 0.9rem;
+}
+.ab-feature__title { font-size: 0.875rem !important; font-weight: 700 !important; margin-bottom: 0.4rem !important; }
+.ab-feature__desc  { font-size: 0.8rem; color: var(--text-3); line-height: 1.6; margin: 0; }
+
+/* Values */
+.ab-values {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+@media (max-width: 560px) { .ab-values { grid-template-columns: 1fr; } }
+.ab-value {
+  display: flex;
+  gap: 0.85rem;
+  padding: 1.1rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius);
+  align-items: flex-start;
+}
+.ab-value__arrow { color: var(--blue-light); font-size: 0.9rem; margin-top: 3px; flex-shrink: 0; }
+.ab-value__title { font-size: 0.875rem !important; font-weight: 700 !important; margin-bottom: 0.25rem !important; }
+.ab-value__desc  { font-size: 0.78rem; color: var(--text-3); margin: 0; line-height: 1.6; }
+
+/* CTA */
+.ab-cta {
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius);
+  padding: 3rem 2rem;
+  text-align: center;
+}
+.ab-cta h2 { margin-bottom: 0.6rem !important; }
+.ab-cta p  { font-size: 0.9rem; color: var(--text-2); margin-bottom: 1.75rem; }
+.ab-cta__btns { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }

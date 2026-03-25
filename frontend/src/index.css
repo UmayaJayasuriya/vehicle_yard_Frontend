@@ -1,68 +1,259 @@
+/* ============================================================
+   VEHICLE YARD — Design System  (loads AFTER Bootstrap)
+   ============================================================ */
+
+/* --- Custom Properties ------------------------------------- */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+
+  --bg:        #080d1a;
+  --bg-2:      #0e1525;
+  --bg-3:      #131d30;
+  --surface:   #111827;
+  --surface-2: #1a2336;
+  --surface-3: #1f2b40;
+
+  --border:    rgba(255,255,255,0.06);
+  --border-2:  rgba(255,255,255,0.10);
+  --border-3:  rgba(255,255,255,0.16);
+
+  --blue:      #2563eb;
+  --blue-light:#3b82f6;
+  --blue-dim:  rgba(37,99,235,0.18);
+  --blue-glow: rgba(37,99,235,0.30);
+
+  --gold:      #d97706;
+  --gold-light:#f59e0b;
+  --gold-dim:  rgba(217,119,6,0.15);
+  --gold-glow: rgba(217,119,6,0.28);
+
+  --red:       #dc2626;
+  --green:     #059669;
+
+  --text-1:    #f0f4ff;
+  --text-2:    #8fa3c8;
+  --text-3:    #4d6285;
+
+  --radius-sm: 4px;
+  --radius:    8px;
+  --radius-lg: 14px;
+
+  --shadow:    0 2px 12px rgba(0,0,0,0.5);
+  --shadow-md: 0 4px 24px rgba(0,0,0,0.55);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.65);
+
+  --ease:      cubic-bezier(0.4, 0, 0.2, 1);
+  --dur:       0.2s;
+  --dur-md:    0.35s;
+}
+
+/* --- Base -------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+/* Force dark — override Bootstrap light defaults */
+html body,
+body {
+  margin: 0 !important;
+  font-family: var(--font-sans) !important;
+  font-size: 0.95rem;
+  line-height: 1.6;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
+  color: var(--text-1) !important;
+  background-color: var(--bg) !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
+/* Root layout */
+#root {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg);
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
+/* Scrollbar */
+::-webkit-scrollbar        { width: 5px; height: 5px; }
+::-webkit-scrollbar-track  { background: var(--bg); }
+::-webkit-scrollbar-thumb  { background: var(--surface-3); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-3); }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+/* --- Typography -------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans) !important;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-1) !important;
+  margin: 0 0 0.5em !important;
+}
+h1 { font-size: clamp(1.9rem, 4.5vw, 3rem); font-weight: 800; letter-spacing: -0.03em; }
+h2 { font-size: clamp(1.4rem, 3vw, 2rem);   letter-spacing: -0.02em; }
+h3 { font-size: 1.35rem; }
+h4 { font-size: 1.05rem; }
+h5 { font-size: 0.95rem; }
+
+p { margin: 0 0 1rem; color: var(--text-2); }
+
+a { color: var(--blue-light); text-decoration: none; transition: color var(--dur) var(--ease); }
+a:hover { color: #60a5fa; }
+
+/* --- Bootstrap Overrides — FORCE DARK ---------------------- */
+.card, .card-body {
+  background-color: var(--surface) !important;
+  border: 1px solid var(--border-2) !important;
+  border-radius: var(--radius) !important;
+  color: var(--text-1) !important;
+}
+.card-title { color: var(--text-1) !important; }
+.card-text  { color: var(--text-2) !important; }
+.text-muted { color: var(--text-3) !important; }
+.bg-light   { background-color: var(--surface-2) !important; }
+.bg-dark    { background-color: var(--bg-2) !important; }
+.list-group, .list-group-item {
+  background-color: var(--surface) !important;
+  border-color: var(--border-2) !important;
+  color: var(--text-1) !important;
+}
+.form-control, .form-select {
+  background-color: var(--surface-2) !important;
+  border-color: var(--border-2) !important;
+  color: var(--text-1) !important;
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--blue-light) !important;
+  box-shadow: 0 0 0 3px var(--blue-dim) !important;
+  background-color: var(--surface-2) !important;
+  color: var(--text-1) !important;
+}
+.form-control::placeholder { color: var(--text-3) !important; }
+.alert-danger {
+  background: rgba(220,38,38,0.1) !important;
+  border-color: rgba(220,38,38,0.3) !important;
+  color: #fca5a5 !important;
+}
+.alert-success {
+  background: rgba(5,150,105,0.12) !important;
+  border-color: rgba(5,150,105,0.3) !important;
+  color: #6ee7b7 !important;
+}
+.badge { font-family: var(--font-sans) !important; }
+
+/* --- Buttons --------------------------------------------- */
+button { font-family: var(--font-sans) !important; }
+
+.btn-primary-vy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 1.4rem;
+  font-family: var(--font-sans) !important;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: background var(--dur) var(--ease), transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  text-decoration: none;
 }
-button:hover {
-  border-color: #646cff;
+.btn-primary-vy:hover {
+  color: #fff;
+  background: var(--blue-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px var(--blue-glow);
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+.btn-primary-vy:active { transform: none; }
+
+.btn-ghost-vy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  color: var(--text-2);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 1.4rem;
+  font-family: var(--font-sans) !important;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+  text-decoration: none;
+}
+.btn-ghost-vy:hover {
+  color: var(--text-1);
+  border-color: var(--border-3);
+  background: var(--surface-2);
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+/* --- Custom Input ----------------------------------------- */
+.vy-input {
+  width: 100%;
+  background: var(--surface-2) !important;
+  border: 1px solid var(--border-2) !important;
+  border-radius: var(--radius-sm) !important;
+  color: var(--text-1) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 0.875rem;
+  padding: 0.65rem 1rem;
+  transition: border-color var(--dur), box-shadow var(--dur);
+  outline: none;
+}
+.vy-input::placeholder { color: var(--text-3); }
+.vy-input:focus {
+  border-color: var(--blue-light) !important;
+  box-shadow: 0 0 0 3px var(--blue-dim);
+}
+.vy-input.is-error { border-color: var(--red) !important; }
+.vy-input option { background: var(--surface); }
+
+/* --- Utilities --------------------------------------------- */
+.page-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 5rem;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #60a5fa, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-overline {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--blue-light);
+  margin-bottom: 0.75rem;
+}
+
+.divider {
+  border: none;
+  height: 1px;
+  background: var(--border-2);
+  margin: 0;
+}
+
+/* --- Fade in ---------------------------------------------- */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeUp 0.5s var(--ease) both; }
+
+/* Shimmer keyframe (for skeletons) */
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }

@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import "./App.css";
 import SiteNavbar from "./components/Navbar";
 import Home from "./pages/Home";
 import VehicleDetails from "./pages/VehicleDetails";
@@ -14,25 +15,22 @@ import { AuthProvider, useAuth } from "./store/authContext.jsx";
 
 function ProtectedAdminRoute({ children }) {
   const { isAdmin, loading } = useAuth();
-
   if (loading) {
-    return <div className="text-center py-5">Loading...</div>;
+    return (
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "60vh" }}>
+        <div style={{ textAlign: "center", color: "var(--text-2)" }}>Loading...</div>
+      </div>
+    );
   }
-
-  if (!isAdmin) {
-    return <Navigate to="/login" replace />;
-  }
-
+  if (!isAdmin) return <Navigate to="/login" replace />;
   return children;
 }
 
 function AppContent() {
-  const { isAdmin } = useAuth();
-
   return (
     <>
       <SiteNavbar />
-      <div className="container py-4">
+      <div className="page-wrapper">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/vehicle/:id" element={<VehicleDetails />} />

@@ -1,91 +1,79 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../store/authContext.jsx";
+import "./Login.css";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { login, isAdmin } = useAuth();
 
-  // If already logged in (state updated), redirect away from login
-  useEffect(() => {
-    if (isAdmin) {
-      navigate("/admin/vehicles", { replace: true });
-    }
-  }, [isAdmin, navigate]);
+  // Redirect if already logged in
+  if (isAdmin) { navigate("/admin/vehicles", { replace: true }); return null; }
 
   const handleLogin = (e) => {
     e.preventDefault();
-    
-    // Simple admin credentials
-    const ADMIN_USERNAME = "admin";
-    const ADMIN_PASSWORD = "admin123";
-
-    const u = username.trim();
-    const p = password.trim();
-    if (u === ADMIN_USERNAME && p === ADMIN_PASSWORD) {
-      // Use auth context to set admin state
-      login();
-      sessionStorage.setItem("adminUsername", u);
-      navigate("/admin/vehicles", { replace: true });
-    } else {
-      setError("Invalid username or password");
-      setPassword("");
-    }
+    setError(""); setLoading(true);
+    setTimeout(() => {
+      if (username.trim() === "admin" && password.trim() === "admin123") {
+        login(); sessionStorage.setItem("adminUsername", username.trim());
+        navigate("/admin/vehicles", { replace: true });
+      } else {
+        setError("Invalid username or password.");
+        setPassword(""); setLoading(false);
+      }
+    }, 500);
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center" style={{ minHeight: "70vh" }}>
-      <div className="card shadow p-4" style={{ maxWidth: 400, width: "100%" }}>
-        <h3 className="card-title text-center mb-4">Admin Login</h3>
-        
+    <div className="lp">
+      <div className="lp__card">
+        {/* Header */}
+        <div className="lp__head">
+          <div className="lp__mark">VY</div>
+          <div>
+            <h2 className="lp__title">Vehicle Yard</h2>
+            <p className="lp__sub">Administration Portal</p>
+          </div>
+        </div>
+
+        <hr className="divider" />
+
+        <h3 className="lp__form-title">Sign in to continue</h3>
+
         {error && (
-          <div className="alert alert-danger alert-dismissible fade show" role="alert">
-            {error}
-            <button 
-              type="button" 
-              className="btn-close" 
-              onClick={() => setError("")}
-            ></button>
+          <div className="lp__error">
+            <i className="bi bi-exclamation-circle" /> {error}
           </div>
         )}
 
-        <form onSubmit={handleLogin}>
-          <div className="mb-3">
-            <label className="form-label">Username</label>
+        <form onSubmit={handleLogin} className="lp__form">
+          <div className="lp__group">
+            <label className="lp__label">Username</label>
             <input
-              type="text"
-              className="form-control"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Enter admin username"
-              required
+              type="text" className="vy-input" value={username}
+              onChange={e => setUsername(e.target.value)}
+              placeholder="Enter username" required autoFocus
             />
           </div>
-
-          <div className="mb-3">
-            <label className="form-label">Password</label>
+          <div className="lp__group">
+            <label className="lp__label">Password</label>
             <input
-              type="password"
-              className="form-control"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter admin password"
-              required
+              type="password" className="vy-input" value={password}
+              onChange={e => setPassword(e.target.value)}
+              placeholder="Enter password" required
             />
           </div>
-
-          <button type="submit" className="btn btn-primary w-100">
-            Login
+          <button type="submit" className="btn-primary-vy lp__submit" disabled={loading}>
+            {loading ? "Signing in..." : <><i className="bi bi-arrow-right-circle" /> Sign In</>}
           </button>
         </form>
 
-        <div className="mt-3 p-3 bg-light rounded text-muted small">
-          <strong>Demo Credentials:</strong>
-          <div>Username: admin</div>
-          <div>Password: admin123</div>
+        <div className="lp__hint">
+          <i className="bi bi-info-circle" /> Demo: <strong>admin</strong> / <strong>admin123</strong>
         </div>
       </div>
     </div>
