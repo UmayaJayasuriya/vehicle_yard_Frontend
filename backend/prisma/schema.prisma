@@ -35,6 +35,11 @@ model Vehicle {
   soldPrice       Int?
   soldDate        DateTime?
 
+  // sale / invoice
+  customerName    String?
+  customerId      String?
+  paymentType     String?
+
   images          VehicleImage[]
   maintenance     Maintenance[]
 }

@@ -204,11 +204,12 @@ export default function SoldVehicles() {
                       Rs. {trueProfit.toLocaleString()}
                     </td>
                     <td>
-                      <span className="badge bg-info">
-                        {v.finance?.payment?.type
-                          || v.finance?.invoice?.payment?.type
-                          || "Unknown"}
-                      </span>
+                      {(() => {
+                        const pt = v.finance?.invoice?.payment?.type || null;
+                        const label = pt || "Unknown";
+                        const cls = pt === "Cash" ? "bg-success" : pt === "Leasing" ? "bg-primary" : "bg-secondary";
+                        return <span className={`badge ${cls}`}>{label}</span>;
+                      })()}
                     </td>
                   </tr>
                 );

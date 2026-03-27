@@ -29,7 +29,11 @@ function mapFromApi(v) {
       maintenance: v.maintenance || [],
       soldPrice: v.soldPrice ?? null,
       soldDate: v.soldDate ? new Date(v.soldDate).toISOString().slice(0,10) : null,
-      invoice: v.finance?.invoice,
+      invoice: {
+        customerName: v.customerName || null,
+        customerId: v.customerId || null,
+        payment: { type: v.paymentType || null },
+      },
     }
   };
 }

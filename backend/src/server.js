@@ -80,6 +80,9 @@ app.post('/api/vehicles', async (req, res) => {
         boughtDate: finance.boughtDate ? new Date(finance.boughtDate) : undefined,
         soldPrice: finance.soldPrice,
         soldDate: finance.soldDate ? new Date(finance.soldDate) : undefined,
+        customerName: finance.invoice?.customerName || null,
+        customerId: finance.invoice?.customerId || null,
+        paymentType: finance.invoice?.payment?.type || null,
         images: {
           create: images.map((url) => ({ id: `img_${Math.random().toString(16).slice(2)}_${Date.now()}`, url }))
         }
@@ -131,7 +134,10 @@ app.put('/api/vehicles/:id', async (req, res) => {
         boughtPrice: finance.boughtPrice,
         boughtDate: finance.boughtDate ? new Date(finance.boughtDate) : undefined,
         soldPrice: finance.soldPrice,
-        soldDate: finance.soldDate ? new Date(finance.soldDate) : undefined
+        soldDate: finance.soldDate ? new Date(finance.soldDate) : undefined,
+        customerName: finance.invoice?.customerName || null,
+        customerId: finance.invoice?.customerId || null,
+        paymentType: finance.invoice?.payment?.type || null
       },
       include: { images: true, maintenance: true }
     });
